@@ -1,0 +1,46 @@
+\documentclass[10pt]{article}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage[landscape, margin=1in]{geometry} % Set the page to landscape orientation
+
+
+% Tikz settings optimized for causal graphs.
+% Just copy-paste this part
+\usetikzlibrary{shapes,decorations,arrows,calc,arrows.meta,fit,positioning}
+\tikzset{
+    -Latex,auto,node distance =1 cm and 1 cm,semithick,
+    state/.style ={ellipse, draw, minimum width = 0.7 cm},
+    point/.style = {circle, draw, inner sep=0.04cm,fill,node contents={}},
+    bidirected/.style={Latex-Latex,dashed},
+    el/.style = {inner sep=2pt, align=left, sloped}
+}
+\begin{document}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+    \node (1) [box, draw=blue] at (0,0) {Occupation};
+    \node (2) [right = of 1, box, draw=orange, xshift=0.5cm] {Occupational exposure};
+    \node (3) [right = of 2, box, draw=green, xshift=0.5cm] {Lung cancer diagnosis};
+    \node (4) [right = of 3, box, draw=green] {Lung cancer death};
+    \node (5) [below = 6cm of 1, box, draw=black, xshift=-2cm] {Age, sex, ethnicity, geography, education, smoking*};
+    \node (6) [below = of 2, box, draw=orange, yshift=0.5cm] {Living conditions};
+    \node (7) [below = of 6, box, draw=orange, yshift=0.5cm] {Health status};
+
+    \path (1) edge (2);
+    \path (2) edge (3);
+    \path (3) edge (4);
+    \path (5) edge (1);
+    \path (1) edge (6);
+    \path (7) edge (3);
+    \path (7) edge (4);
+    \path (6) edge (7);
+    \path (5) edge (7);
+    \path (5) edge (3);
+    \path (5) edge (4);
+
+
+\end{tikzpicture}
+\caption{A DAG showing the relationship between occupation and lung cancer. Exposure is shown by a blue box, confounder black, mediator orange, and outcome green. *smoking is known to be a moderator for certain carcinogens and is also modelled as a moderator in analysis.}
+\end{figure}
+\end{document}
